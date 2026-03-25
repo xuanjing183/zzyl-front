@@ -71,13 +71,30 @@ onMounted(()=>{
 
 //查看入住详情
 const getCheckIn = (id) => {
-    getCheckInInfo(id).then((res) => {
-    applyFormInfo.value = res.data.checkInElderVo;
-    familyInfo.value = res.data.elderFamilyVoList;
-    configInfo.value = res.data.checkInConfigVo;
-    transactFormInfo.value = res.data.contract;
+  getCheckInInfo(id).then((res) => {
+    if (res.code === 200) {
+      const data = res.data;  // 根据实际 API 返回调整
+      applyFormInfo.value = data.checkInElderVo || data.data?.checkInElderVo;
+      familyInfo.value = data.elderFamilyVoList || data.data?.elderFamilyVoList;
+      configInfo.value = data.checkInConfigVo || data.data?.checkInConfigVo;
+      transactFormInfo.value = data.contract || data.data?.contract;
+    }
+  }).catch(err => {
+    console.error('获取详情失败:', err);
   });
 };
+// const getCheckIn = (id) => {
+//     getCheckInInfo(id).then((res) => {
+//     applyFormInfo.value = res.data.checkInElderVo;
+//     familyInfo.value = res.data.elderFamilyVoList;
+//     configInfo.value = res.data.checkInConfigVo;
+//     transactFormInfo.value = res.data.contract;
+//   });
+// };
+
+
+
+
 
 //提交表单
 const submitForm = () => {
